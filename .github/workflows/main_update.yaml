@@ -1,0 +1,39 @@
+name: Update Main
+on: 
+  push:
+    branches: main
+
+jobs:
+  update-manifest:
+    name: Update Manifest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16.x'
+      
+      - uses: c-hive/gha-yarn-cache@v2
+      
+      - name: Install dependencies
+        run: yarn
+
+      - name: Run update manifest script
+        run: node .build/updateManifest.js ${{ secrets.SLACK_APP_CONFIG_TOKEN}}
+
+  release:
+      - name: Notify on update to main
+        uses: Ilshidur/action-slack@2.1.0
+        with:
+          args: 'Main updated with **{{COMMIT_MESSAGE}}**'
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_NOTIFY_WEBHOOK }}
+          SLACK_USERNAME: Github Slack Bot
+          SLACK_CHANNEL: github-notifications
+          SLACK_AVATAR: repository
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+
+
+
