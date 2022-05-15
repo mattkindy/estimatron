@@ -5,6 +5,10 @@
   "repository": "git@github.com:mattkindy/estimatron.git",
   "author": "Matt Kindy <matt.kindy.ii@gmail.com>",
   "license": "GPL v3",
+  "engines": {
+    "node": ">=16",
+    "npm": ">=8"
+  },
   "dependencies": {
     "node-fetch": "^3.2.4"
   }
