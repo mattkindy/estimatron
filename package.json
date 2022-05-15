@@ -1,0 +1,11 @@
+{
+  "name": "estimatron",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "repository": "git@github.com:mattkindy/estimatron.git",
+  "author": "Matt Kindy <matt.kindy.ii@gmail.com>",
+  "license": "GPL v3",
+  "dependencies": {
+    "node-fetch": "^3.2.4"
+  }
+}
