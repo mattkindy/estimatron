@@ -1,0 +1,79 @@
+name: Rotate Slack App Config Token
+on:
+  schedule:
+    - cron: '0 * * * *'  # every hour
+
+jobs:
+  rotate-slack-app-config-token:
+    name: Rotate Slack app config token
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16.x'
+
+      - name: Rotate token
+        id: rotate-token
+        run: |
+          RESPONSE=$(curl "https://slack.com/api/tooling.tokens.rotate?refresh_token=${{secrets.SLACK_APP_CONFIG_REFRESH_TOKEN}}")
+
+          NEW_TOKEN=$(echo $RESPONSE | jq '.token' -r)
+          echo "::set-output name=NEW_TOKEN::$NEW_TOKEN"
+
+          NEW_REFRESH_TOKEN=$(echo $RESPONSE | jq '.token' -r)
+          echo "::set-output name=NEW_REFRESH_TOKEN::$NEW_REFRESH_TOKEN"
+          
+          ROTATION_OK=$(echo $RESPONSE | jq '.ok' -r)
+          echo "::set-output name=ROTATION_OK::$ROTATION_OK"
+
+          ERROR=$(echo $RESPONSE | jq '.error' -r)
+          echo "::set-output name=ERROR::$ERROR"
+        outputs:
+          NEW_TOKEN: ${{ steps.rotate-token.outputs.NEW_TOKEN }}
+          NEW_REFRESH_TOKEN: ${{ steps.rotate-token.outputs.NEW_REFRESH_TOKEN }}
+          ROTATION_OK: ${{ steps.rotate-token.outputs.ROTATION_OK }}
+          ERROR: ${{ steps.rotate-token.outputs.ERROR }}
+
+      - name: Notify on failure to rotate
+        if: ${{ steps.rotate-token.outputs.ROTATION_OK != "true" }}
+        uses: Ilshidur/action-slack@2.1.0
+        with:
+          args: 'Rotation of Estimatron app config token failed:\n```{{ERROR}}```'
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_NOTIFY_WEBHOOK }}
+          SLACK_USERNAME: Github Slack Bot
+          SLACK_CHANNEL: github-notifications
+          SLACK_AVATAR: repository
+          ERROR: ${{ steps.rotate-token.outputs.ERROR }}
+
+      - name: Update refresh token secret
+        id: update-refresh-token-secret
+        if: ${{ steps.rotate-token.outputs.ROTATION_OK == "true" }}
+        uses: gliech/create-github-secret-action@v1
+        with:
+          name: SLACK_APP_CONFIG_REFRESH_TOKEN
+          value: ${{ steps.rotate-token.outputs.NEW_REFRESH_TOKEN }}
+          pa_token: ${{ secrets.CREATE_GITHUB_SECRET_PA_TOKEN }}
+
+      - name: Update token secret
+        id: update-token-secret
+        if: ${{ steps.rotate-token.outputs.ROTATION_OK == "true" }}
+        uses: gliech/create-github-secret-action@v1
+        with:
+          name: SLACK_APP_CONFIG_TOKEN
+          value: ${{ steps.rotate-token.outputs.NEW_TOKEN }}
+          pa_token: ${{ secrets.CREATE_GITHUB_SECRET_PA_TOKEN }}
+
+      - name: Notify on failure to update secrets
+        if: ${{ (steps.update-refresh-token-secret.outcome == 'failure') || (steps.update-token-secret.outcome == 'failure') }}
+        uses: Ilshidur/action-slack@2.1.0
+        with:
+          args: 'Failure occurred while updating Estimatron app config token secrets'
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_NOTIFY_WEBHOOK }}
+          SLACK_USERNAME: Github Slack Bot
+          SLACK_CHANNEL: github-notifications
+          SLACK_AVATAR: repository

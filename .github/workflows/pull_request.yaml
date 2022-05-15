@@ -1,0 +1,27 @@
+name: Pull Request
+on: 
+  pull_request:
+    branches: main
+
+jobs:
+  validate-manifest:
+    name: Validate Manifest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16.x'
+      
+      - uses: c-hive/gha-yarn-cache@v2
+      
+      - name: Install dependencies
+        run: yarn
+
+      - name: Run validation script
+        run: node .build/validateManifest.js ${{ secrets.SLACK_APP_CONFIG_TOKEN}}
+
+
+
