@@ -17,7 +17,7 @@ jobs:
 
       - name: Rotate token
         id: rotate-token
-        command: |
+        run: |
           RESPONSE=$(curl "https://slack.com/api/tooling.tokens.rotate?refresh_token=${{secrets.SLACK_APP_CONFIG_REFRESH_TOKEN}}")
 
           NEW_TOKEN=$(echo $RESPONSE | jq '.token' -r)
