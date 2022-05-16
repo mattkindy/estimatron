@@ -21,7 +21,7 @@ jobs:
         run: yarn
 
       - name: Run validation script
-        run: node .build/validateManifest.js ${{ secrets.SLACK_APP_CONFIG_TOKEN}}
+        run: node --loader ts-node/esm .build/validateManifest.ts ${{ secrets.SLACK_APP_CONFIG_TOKEN}}
 
 
 
