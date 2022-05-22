@@ -7,7 +7,7 @@ provider:
   stage: dev
   region: us-central1
   project: estimatron-production
-  credentials: ~/.gcloud/keyfile.json
+  credentials: ${env:CREDENTIALS_PATH}
 
 frameworkVersion: '3'
 
