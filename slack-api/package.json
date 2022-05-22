@@ -1,0 +1,31 @@
+{
+  "name": "slack-api",
+  "version": "0.1.0",
+  "description": "",
+  "main": "build/src/index.js",
+  "scripts": {
+    "start": "functions-framework --source=build/src/ --target=http",
+    "watch": "concurrently \"tsc -w\" \"nodemon --watch ./build/ --exec npm run start\"",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "gts lint",
+    "clean": "gts clean",
+    "compile": "tsc",
+    "fix": "gts fix",
+    "prepare": "yarn run compile",
+    "pretest": "yarn run compile",
+    "posttest": "yarn run lint"
+  },
+  "author": "serverless.com",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^14.11.2",
+    "concurrently": "^7.2.0",
+    "gts": "^3.1.0",
+    "nodemon": "^2.0.16",
+    "serverless-google-cloudfunctions": "*",
+    "typescript": "^4.0.3"
+  },
+  "dependencies": {
+    "@google-cloud/functions-framework": "^3.1.1"
+  }
+}
