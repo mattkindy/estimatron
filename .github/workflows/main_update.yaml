@@ -27,6 +27,19 @@ jobs:
     name: release
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v1
+      
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16.x'
+      
+      - uses: c-hive/gha-yarn-cache@v2
+
+      - name: Install Dependencies
+        run: yarn
+        working-directory: slack-api
+
       - name: Setup credentials
         run: |
           echo $CREDENTIALS >> credentials.json

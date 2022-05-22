@@ -35,6 +35,17 @@ jobs:
           CREDENTIALS: ${{ secrets.ESTIMATRON_PRODUCTION_CREDENTIALS }}
 
       - uses: actions/checkout@v1
+      
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16.x'
+      
+      - uses: c-hive/gha-yarn-cache@v2
+
+      - name: Install Dependencies
+        run: yarn
+        working-directory: slack-api
 
       - name: Validate slack-api/serverless.yml
         uses: serverless/github-action@v3
