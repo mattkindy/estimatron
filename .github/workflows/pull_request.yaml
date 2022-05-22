@@ -27,15 +27,6 @@ jobs:
     name: Validate Serverless Config
     runs-on: ubuntu-latest
     steps:
-      - name: Setup credentials
-        run: |
-          echo $CREDENTIALS >> credentials.json
-          CREDENTIALS_PATH="$(pwd)/credentials.json"
-          echo "Credentials are stored at $CREDENTIALS_PATH"
-          echo "CREDENTIALS_PATH=$CREDENTIALS_PATH" >> $GITHUB_ENV
-        env:
-          CREDENTIALS: ${{ secrets.ESTIMATRON_PRODUCTION_CREDENTIALS }}
-
       - uses: actions/checkout@v1
       
       - name: Use Node.js 16.x
@@ -48,6 +39,15 @@ jobs:
       - name: Install Dependencies
         run: yarn
         working-directory: slack-api
+
+      - name: Setup credentials
+        run: |
+          echo $CREDENTIALS >> credentials.json
+          CREDENTIALS_PATH="$(pwd)/credentials.json"
+          echo "Credentials are stored at $CREDENTIALS_PATH"
+          echo "CREDENTIALS_PATH=$CREDENTIALS_PATH" >> $GITHUB_ENV
+        env:
+          CREDENTIALS: ${{ secrets.ESTIMATRON_PRODUCTION_CREDENTIALS }}
 
       - name: Validate slack-api/serverless.yml
         uses: serverless/github-action@v3
