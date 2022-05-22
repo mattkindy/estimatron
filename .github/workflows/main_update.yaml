@@ -30,13 +30,12 @@ jobs:
       - name: Setup credentials
         run: |
           echo $CREDENTIALS >> credentials.json
-          echo "::set-env name=CREDENTIALS_PATH::$(pwd)/credentials.json"
+          echo "CREDENTIALS_PATH=$(pwd)/credentials.json" >> $GITHUB_ENV
         env:
           CREDENTIALS: ${{ secrets.ESTIMATRON_PRODUCTION_CREDENTIALS }}
 
       - name: Deploy to GCP
         uses: serverless/github-action@v3
-        with:
         with:
           args: -c "cd ./slack-api && serverless deploy"
           entrypoint: /bin/sh
