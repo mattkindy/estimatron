@@ -30,7 +30,9 @@ jobs:
       - name: Setup credentials
         run: |
           echo $CREDENTIALS >> credentials.json
-          echo "CREDENTIALS_PATH=$(pwd)/credentials.json" >> $GITHUB_ENV
+          CREDENTIALS_PATH="$(pwd)/credentials.json"
+          echo "Credentials are stored at $CREDENTIALS_PATH"
+          echo "CREDENTIALS_PATH=$CREDENTIALS_PATH" >> $GITHUB_ENV
         env:
           CREDENTIALS: ${{ secrets.ESTIMATRON_PRODUCTION_CREDENTIALS }}
 
