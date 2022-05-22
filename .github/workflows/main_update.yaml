@@ -37,7 +37,9 @@ jobs:
       - name: Deploy to GCP
         uses: serverless/github-action@v3
         with:
-          args: deploy
+        with:
+          args: -c "cd ./slack-api && serverless deploy"
+          entrypoint: /bin/sh
 
       - name: Notify on update to main
         uses: Ilshidur/action-slack@2.1.0

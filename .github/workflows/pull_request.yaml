@@ -32,7 +32,8 @@ jobs:
       - name: Validate slack-api/serverless.yml
         uses: serverless/github-action@v3
         with:
-          args: info
+          args: -c "cd ./slack-api && serverless info"
+          entrypoint: /bin/sh
         
 
 
