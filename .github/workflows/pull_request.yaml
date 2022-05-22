@@ -27,6 +27,13 @@ jobs:
     name: Validate Serverless Config
     runs-on: ubuntu-latest
     steps:
+      - name: Setup credentials
+        run: |
+          echo $CREDENTIALS >> credentials.json
+          echo "::set-env name=CREDENTIALS_PATH::$(pwd)/credentials.json"
+        env:
+          CREDENTIALS: ${{ secrets.ESTIMATRON_PRODUCTION_CREDENTIALS }}
+          
       - uses: actions/checkout@v1
 
       - name: Validate slack-api/serverless.yml
