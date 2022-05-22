@@ -21,12 +21,24 @@ jobs:
         run: yarn
 
       - name: Run update manifest script
-        run: node --loader ts-node/esm .build/updateManifest.ts ${{ secrets.SLACK_APP_CONFIG_TOKEN}}
+        run: node --loader ts-node/esm .build/updateManifest.ts ${{ secrets.SLACK_APP_CONFIG_TOKEN }}
 
   release:
     name: release
     runs-on: ubuntu-latest
     steps:
+      - name: Setup credentials
+        run: |
+          echo $CREDENTIALS >> credentials.json
+          echo "::set-env name=CREDENTIALS_PATH::$(pwd)/credentials.json"
+        env:
+          CREDENTIALS: ${{ secrets.ESTIMATRON_PRODUCTION_CREDENTIALS }}
+
+      - name: Deploy to GCP
+        uses: serverless/github-action@v3
+        with:
+          args: deploy
+
       - name: Notify on update to main
         uses: Ilshidur/action-slack@2.1.0
         with:

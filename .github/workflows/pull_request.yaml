@@ -23,5 +23,17 @@ jobs:
       - name: Run validation script
         run: node --loader ts-node/esm .build/validateManifest.ts ${{ secrets.SLACK_APP_CONFIG_TOKEN}}
 
+  validate-serverless:
+    name: Validate Serverless Config
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Validate slack-api/serverless.yml
+        uaes: serverless/github-action@v3
+        with:
+          args: info
+        
+
 
 
