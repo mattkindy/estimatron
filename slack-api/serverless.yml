@@ -4,9 +4,8 @@ service: slack-api
 provider:
   name: google
   runtime: nodejs16
-  stage: dev
   region: us-central1
-  project: estimatron-production
+  project: estimatron-${opt:stage, self:provider.stage}
   credentials: ${env:CREDENTIALS_PATH}
 
 frameworkVersion: '3'
