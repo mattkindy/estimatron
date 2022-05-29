@@ -1,2 +1,2 @@
 import type { HttpFunction } from '@google-cloud/functions-framework';
-export declare const http: HttpFunction;
+export declare const slack: HttpFunction;

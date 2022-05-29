@@ -7,6 +7,8 @@ provider:
   region: us-central1
   project: estimatron-${opt:stage, self:provider.stage}
   credentials: ${env:CREDENTIALS_PATH}
+  environment:
+    PROJECT: ${self:provider.project}
 
 frameworkVersion: '3'
 
@@ -22,24 +24,7 @@ package:
     - .git/**
 
 functions:
-  first:
-    handler: http
+  slack:
+    handler: slack
     events:
       - http: path
-  # NOTE: the following uses an "event" event (pubSub event in this case).
-  # Please create the corresponding resources in the Google Cloud
-  # before deploying this service through Serverless
-  #second:
-  #  handler: event
-  #  events:
-  #    - event:
-  #        eventType: providers/cloud.pubsub/eventTypes/topic.publish
-  #        resource: projects/*/topics/my-topic
-# you can define resources, templates etc. the same way you would in a
-# Google Cloud deployment configuration
-#resources:
-#  resources:
-#    - type: storage.v1.bucket
-#      name: my-serverless-service-bucket
-#  imports:
-#    - path: my_template.jinja
