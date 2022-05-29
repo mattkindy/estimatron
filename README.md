@@ -16,6 +16,18 @@
 ### Frontend
 TBD
 
+
+## Development 
+### Backend
+#### Local
+To execute a function, use `@google-cloud/functions-framework`. The `serverless invoke local` command doesn't work
+due to Typescript setup -- [it doesn't look at the `main` property in `package.json`](https://github.com/serverless/serverless-google-cloudfunctions/blob/b1cdaf25c1cb782b906ea4bfbf0adbd4b4efa4fd/invokeLocal/lib/nodeJs.js#L28).
+
+```bash
+PROJECT=estimatron-production npx @google-cloud/functions-framework --target=slack
+```
+
+## Deployment
 ### Backend
 Serverless is set up to handle the deployment, assuming all is configured properly.
 
