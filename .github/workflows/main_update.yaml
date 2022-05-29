@@ -50,7 +50,7 @@ jobs:
       - name: Deploy to GCP
         uses: serverless/github-action@v3
         with:
-          args: -c "cd ./slack-api && serverless deploy"
+          args: -c "cd ./slack-api && serverless deploy --stage production"
           entrypoint: /bin/sh
 
       - name: Notify on update to main
