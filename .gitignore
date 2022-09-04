@@ -9,3 +9,11 @@ yarn-error.log
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+
+slack-api/.yarn/*
+!slack-api/.yarn/patches
+!slack-api/.yarn/plugins
+!slack-api/.yarn/releases
+!slack-api/.yarn/sdks
+!slack-api.yarn/versions
