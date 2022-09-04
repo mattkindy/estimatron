@@ -1,3 +1,19 @@
 node_modules/
 
 yarn-error.log
+
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+
+slack-api/.yarn/*
+!slack-api/.yarn/patches
+!slack-api/.yarn/plugins
+!slack-api/.yarn/releases
+!slack-api/.yarn/sdks
+!slack-api.yarn/versions

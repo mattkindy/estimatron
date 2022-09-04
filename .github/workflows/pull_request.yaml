@@ -18,7 +18,9 @@ jobs:
       - uses: c-hive/gha-yarn-cache@v2
       
       - name: Install dependencies
-        run: yarn
+        run: |
+          yarn set version berry
+          yarn
 
       - name: Run validation script
         run: node --loader ts-node/esm .build/validateManifest.ts ${{ secrets.SLACK_APP_CONFIG_TOKEN}}
@@ -37,7 +39,9 @@ jobs:
       - uses: c-hive/gha-yarn-cache@v2
 
       - name: Install Dependencies
-        run: yarn
+        run: |
+          yarn set version berry
+          yarn
         working-directory: slack-api
 
       - name: Setup credentials
